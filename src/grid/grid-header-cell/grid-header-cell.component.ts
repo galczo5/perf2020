@@ -1,17 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-grid-header-cell',
   template: `
-    <div class="grid-header-cell" [style.width.px]="width">
-      {{ getName() }}
-      <span class="grid-header-cell-sort-arrows">
-        ⮝⮟
-      </span>
-    </div>
+    {{ nameParsed }}
+    <span class="grid-header-cell-sort-arrows">
+      ⮝⮟
+    </span>
   `,
   styles: [`
-    .grid-header-cell {
+    :host {
       padding: 0 10px;
       text-transform: uppercase;
       font-weight: bold;
@@ -29,17 +27,28 @@ import {Component, Input, OnInit} from '@angular/core';
     }
   `]
 })
-export class GridHeaderCellComponent implements OnInit {
+export class GridHeaderCellComponent implements OnInit, OnChanges {
 
   @Input()
   name: string;
 
+  nameParsed: string;
+
+  @HostBinding('style.width.px')
   @Input()
   width: number;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (changes.name && changes.name.currentValue) {
+      this.nameParsed = this.getName();
+    }
+
   }
 
   getName(): string {
