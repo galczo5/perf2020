@@ -92,12 +92,18 @@ export class GridRowComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.renderer.addClass(this.element.nativeElement, 'hover');
-      });
 
-    fromEvent(this.elementRef.nativeElement, 'mouseleave')
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.renderer.removeClass(this.element.nativeElement, 'hover');
+        const mouseLeave$: Subject<void> = new Subject<void>();
+        fromEvent(this.elementRef.nativeElement, 'mouseleave')
+          .pipe(
+            takeUntil(mouseLeave$),
+            takeUntil(this.onDestroy$)
+          )
+          .subscribe(() => {
+            this.renderer.removeClass(this.element.nativeElement, 'hover');
+            mouseLeave$.next();
+            mouseLeave$.complete();
+          });
       });
 
     fromEvent(this.elementRef.nativeElement, 'click')
