@@ -45,7 +45,7 @@ export class GridColorCellComponent implements OnInit, OnChanges {
 
     if (changes.data && changes.data.currentValue) {
       this.color = this.getColor();
-      this.color = this.getColor().toLocaleLowerCase();
+      this.colorClass = this.getColor().toLocaleLowerCase();
     }
 
   }
