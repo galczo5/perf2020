@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
 import {Model} from '../../data/model';
 import {HeaderCells} from '../grid-header/grid-header.component';
 import {fromEvent, Subject} from 'rxjs';
@@ -85,7 +85,8 @@ export class GridRowComponent implements OnInit, OnDestroy {
 
   private readonly onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private readonly elementRef: ElementRef) { }
+  constructor(private readonly elementRef: ElementRef,
+              private readonly changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
@@ -93,18 +94,21 @@ export class GridRowComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.hover = true;
+        this.changeDetectorRef.detectChanges();
       });
 
     fromEvent(this.elementRef.nativeElement, 'mouseleave')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.hover = false;
+        this.changeDetectorRef.detectChanges();
       });
 
     fromEvent(this.elementRef.nativeElement, 'click')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.selected = !this.selected;
+        this.changeDetectorRef.detectChanges();
       });
   }
 
