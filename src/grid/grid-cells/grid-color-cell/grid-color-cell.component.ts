@@ -1,18 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Model} from '../../../data/model';
 
 @Component({
   selector: 'app-grid-color-cell',
   template: `
-    <div class="grid-color" [style.width.px]="width">
-      <span [style.background]="data.color.toLocaleLowerCase()" class="grid-color-circle"></span>
-      <div>
-        {{ getColor() }}
-      </div>
-    </div>
+    <span [style.background]="colorClass" class="grid-color-circle"></span>
+    {{ color }}
   `,
   styles: [`
-    .grid-color {
+    :host {
       padding: 0 10px;
       display: flex;
       align-items: center;
@@ -28,17 +24,30 @@ import {Model} from '../../../data/model';
     }
   `]
 })
-export class GridColorCellComponent implements OnInit {
+export class GridColorCellComponent implements OnInit, OnChanges {
 
+  @HostBinding('style.width.px')
   @Input()
   width: number;
 
   @Input()
   data: Model;
 
+  color: string;
+  colorClass: string;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (changes.data && changes.data.currentValue) {
+      this.color = this.getColor();
+      this.colorClass = this.getColor().toLocaleLowerCase();
+    }
+
   }
 
   getColor(): string {

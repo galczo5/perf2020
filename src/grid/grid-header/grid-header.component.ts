@@ -11,13 +11,9 @@ export type HeaderCells = Array<HeaderCell>;
 
 @Component({
   selector: 'app-grid-header',
-  template: `
-    <div class="grid-header-row">
-      <app-grid-header-cell *ngFor="let cell of cells" [name]="cell.name" [width]="cell.width"></app-grid-header-cell>
-    </div>
-  `,
+  template: `<app-grid-header-cell *ngFor="let cell of cells" [name]="cell.name" [width]="cell.width"></app-grid-header-cell>`,
   styles: [`
-    .grid-header-row {
+    :host {
       display: flex;
       font-family: monospace;
       height: 40px;

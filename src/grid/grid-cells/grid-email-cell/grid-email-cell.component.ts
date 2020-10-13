@@ -1,16 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Model} from '../../../data/model';
 
 @Component({
   selector: 'app-grid-email-cell',
   template: `
-    <div class="grid-email" [style.width.px]="width">
-      <img class="grid-email-img" src="assets/envelope-solid.png" alt="envelope">
-      <a href="mailto:{{ getEmail() }}">{{ getEmail() }}</a>
-    </div>
+    <img class="grid-email-img" src="assets/envelope-solid.png" alt="envelope">
+    <a href="mailto:{{ email }}">{{ email }}</a>
   `,
   styles: [`
-    .grid-email {
+    :host {
       padding: 0 10px;
       display: flex;
       align-items: center;
@@ -21,17 +19,28 @@ import {Model} from '../../../data/model';
     }
   `]
 })
-export class GridEmailCellComponent implements OnInit {
+export class GridEmailCellComponent implements OnInit, OnChanges {
 
+  @HostBinding('style.width.px')
   @Input()
   width: number;
 
   @Input()
   data: Model;
 
+  email: string;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (changes.data && changes.data.currentValue) {
+      this.email = this.getEmail();
+    }
+
   }
 
   getEmail(): string {
