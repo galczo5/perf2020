@@ -1,27 +1,36 @@
-# Perf2020
+# Angular Performance 2020 
+This repo contains source code for session "Small fixes for huge performance problems
+". Feel free to use and share this code. 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.4.
+I cannot ensure that his repo won't change, so please fork it if you need "today version". Star it if you are interested in updates.
 
-## Development server
+## Pull request
+Check pull requests for this repo. Each contains changes that I've presented during speech. It was the best way to present what I changed and how little effort it costs.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Hosted apps
+You can find all apps hosted [here](http://perf2020.kamil-galek.pl/). If not, try to build it by your own. It's standard Angular CLI project, so checkout commit you want and run `ng serve` or `ng build`;
 
-## Code scaffolding
+## Profiles
+During the presentation I'm using profiles created with T460. All profiles you can find in repo, directory `profiles/`.  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Results
 
-## Build
+Short summary of my tests. Measure `ms / LOC` is my way to show how easy was to get better performance. It shows how many lines of code I had to change to get good results.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+| Fix | Scripting | Rendering | Change in % | ms / LOC | NOTES |
+|---|---|---|---|---|---|
+| no changes, base | | | | | | 
+| structure fixes | | | | | |
+| reduced listeners | | | | | |
+| disabled NgZones | | | | | |
+| disabled NgZones + renderer | | | | | |
+| rendering only visible items | | | | | |
 
-## Running unit tests
+## Slides
+Slides will be here soon.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Additional recommended resources
+[Angular Performance Checklist](https://github.com/mgechev/angular-performance-checklist) by Minko Gechev  
+[JavaScript Performance](https://frontendmasters.com/courses/web-performance/) by Steve Kinney  
+[Angular Performance Optimization Techniques](https://medium.com/swlh/angular-performance-optimization-techniques-5b7ca0808f8b) by Muhammad Danyal
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
