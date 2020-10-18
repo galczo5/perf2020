@@ -2,7 +2,7 @@
 This repo contains source code for session "Small fixes for huge performance problems
 ". Feel free to use and share this code. 
 
-I cannot ensure that his repo won't change, so please fork it if you need "today version". Star it if you are interested in updates.
+I cannot ensure that this repo won't change, so please fork it if you need "today version". Star it if you are interested in updates.
 
 ## Pull request
 Check pull requests for this repo. Each contains changes that I've presented during speech. It was the best way to present what I changed and how little effort it costs.
@@ -15,16 +15,17 @@ During the presentation I'm using profiles created with T460. All profiles you c
 
 ## Results
 
-Short summary of my tests. Measure `ms / LOC` is my way to show how easy was to get better performance. It shows how many lines of code I had to change to get good results.
+Short summary of my tests.
 
-| Fix | Scripting | Rendering | Change in % | ms / LOC | NOTES |
-|---|---|---|---|---|---|
-| no changes, base | | | | | | 
-| structure fixes | | | | | |
-| reduced listeners | | | | | |
-| disabled NgZones | | | | | |
-| disabled NgZones + renderer | | | | | |
-| rendering only visible items | | | | | |
+| Fix | Scripting | Rendering | Diff | NOTES |
+|---|---|---|---|---|
+| raw | 919ms | 1714ms | 10415ms | |
+| no changes, base | 6688ms | 6360ms | 0ms | | 
+| structure fixes | 5351ms | 2454ms | 5243ms | |
+| reduced listeners | 5969ms | 6502ms | 577ms | This one had a huge impact in previous versions od Angular |
+| disabled NgZones | 6074ms | 6144ms | 830ms | A lot better feel of row select and hover |
+| disabled NgZones + renderer | 6343ms | 6438ms | 263ms | A lot better feel of row select and hover |
+| rendering only visible items | 352ms | 93ms | 12603ms | |
 
 ## Slides
 Slides will be here soon.

@@ -9,42 +9,44 @@ import {takeUntil} from 'rxjs/operators';
   template: `
     <div class="grid-row" [class.hover]="hover" [class.selected]="selected">
       <div *ngFor="let cell of cells" class="grid-cell">
+        <ng-container [ngSwitch]="cell.name">
 
-        <app-grid-id-cell *ngIf="cell.name === 'id'"
-                          [data]="data"
-                          [width]="cell.width"></app-grid-id-cell>
-
-        <app-grid-city-cell *ngIf="cell.name === 'city'"
+          <app-grid-id-cell *ngSwitchCase="'id'"
                             [data]="data"
-                            [width]="cell.width"></app-grid-city-cell>
+                            [width]="cell.width"></app-grid-id-cell>
 
-        <app-grid-color-cell *ngIf="cell.name === 'color'"
-                             [data]="data"
-                             [width]="cell.width"></app-grid-color-cell>
-
-        <app-grid-company-cell *ngIf="cell.name === 'company'"
-                               [data]="data"
-                               [width]="cell.width"></app-grid-company-cell>
-
-        <app-grid-first-name-cell *ngIf="cell.name === 'first_name'"
-                                  [data]="data"
-                                  [width]="cell.width"></app-grid-first-name-cell>
-
-        <app-grid-last-name-cell *ngIf="cell.name === 'last_name'"
-                                 [data]="data"
-                                 [width]="cell.width"></app-grid-last-name-cell>
-
-        <app-grid-email-cell *ngIf="cell.name === 'email'"
-                             [data]="data"
-                             [width]="cell.width"></app-grid-email-cell>
-
-        <app-grid-ip-address-cell *ngIf="cell.name === 'ip_address'"
-                                  [data]="data"
-                                  [width]="cell.width"></app-grid-ip-address-cell>
-
-        <app-grid-gender-cell *ngIf="cell.name === 'gender'"
+          <app-grid-city-cell *ngSwitchCase="'city'"
                               [data]="data"
-                              [width]="cell.width"></app-grid-gender-cell>
+                              [width]="cell.width"></app-grid-city-cell>
+
+          <app-grid-color-cell *ngSwitchCase="'color'"
+                               [data]="data"
+                               [width]="cell.width"></app-grid-color-cell>
+
+          <app-grid-company-cell *ngSwitchCase="'company'"
+                                 [data]="data"
+                                 [width]="cell.width"></app-grid-company-cell>
+
+          <app-grid-first-name-cell *ngSwitchCase="'first_name'"
+                                    [data]="data"
+                                    [width]="cell.width"></app-grid-first-name-cell>
+
+          <app-grid-last-name-cell *ngSwitchCase="'last_name'"
+                                   [data]="data"
+                                   [width]="cell.width"></app-grid-last-name-cell>
+
+          <app-grid-email-cell *ngSwitchCase="'email'"
+                               [data]="data"
+                               [width]="cell.width"></app-grid-email-cell>
+
+          <app-grid-ip-address-cell *ngSwitchCase="'ip_address'"
+                                    [data]="data"
+                                    [width]="cell.width"></app-grid-ip-address-cell>
+
+          <app-grid-gender-cell *ngSwitchCase="'gender'"
+                                [data]="data"
+                                [width]="cell.width"></app-grid-gender-cell>
+        </ng-container>
 
       </div>
     </div>
