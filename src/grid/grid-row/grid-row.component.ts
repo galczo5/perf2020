@@ -3,11 +3,13 @@ import {Model} from '../../data/model';
 import {HeaderCells} from '../grid-header/grid-header.component';
 import {fromEvent, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {GridHoverService} from '../grid-hover.service';
+import {GridSelectedService} from '../grid-selected.service';
 
 @Component({
   selector: 'app-grid-row',
   template: `
-    <div class="grid-row" [class.hover]="hover" [class.selected]="selected">
+    <div class="grid-row" [class.hover]="hover" [class.selected]="selected" [attr.data-id]="data.id">
       <div *ngFor="let cell of cells" class="grid-cell">
         <ng-container [ngSwitch]="cell.name">
 
@@ -87,27 +89,32 @@ export class GridRowComponent implements OnInit, OnDestroy {
 
   private readonly onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private readonly elementRef: ElementRef) { }
+  constructor(private readonly elementRef: ElementRef,
+              private readonly gridHoverService: GridHoverService,
+              private readonly gridSelectedService: GridSelectedService) { }
 
   ngOnInit(): void {
 
-    fromEvent(this.elementRef.nativeElement, 'mouseenter')
+    this.gridHoverService.onHover()
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.hover = true;
+      .subscribe(id => {
+        if (id === this.data.id && !this.hover) {
+          this.hover = true;
+        } else if (id !== this.data.id && !!this.hover) {
+          this.hover = false;
+        }
       });
 
-    fromEvent(this.elementRef.nativeElement, 'mouseleave')
+    this.gridSelectedService.onSelected()
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.hover = false;
+      .subscribe(id => {
+        if (id === this.data.id && !this.selected) {
+          this.selected = true;
+        } else if (id !== this.data.id && !!this.selected) {
+          this.selected = false;
+        }
       });
 
-    fromEvent(this.elementRef.nativeElement, 'click')
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.selected = !this.selected;
-      });
   }
 
   ngOnDestroy(): void {
