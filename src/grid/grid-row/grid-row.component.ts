@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Model} from '../../data/model';
 import {HeaderCells} from '../grid-header/grid-header.component';
 import {fromEvent, Subject} from 'rxjs';
@@ -7,7 +7,7 @@ import {takeUntil} from 'rxjs/operators';
 @Component({
   selector: 'app-grid-row',
   template: `
-    <div class="grid-row" [class.hover]="hover" [class.selected]="selected">
+    <div #element class="grid-row">
       <div *ngFor="let cell of cells" class="grid-cell">
         <ng-container [ngSwitch]="cell.name">
 
@@ -73,40 +73,50 @@ import {takeUntil} from 'rxjs/operators';
 })
 export class GridRowComponent implements OnInit, OnDestroy {
 
+  @ViewChild('element', { read: ElementRef })
+  element: ElementRef;
+
   @Input()
   data: Model;
 
   @Input()
   cells: HeaderCells = [];
 
-  @Input()
-  hover: boolean = false;
-
-  @Input()
-  selected: boolean = false;
-
+  private selected: boolean = false;
   private readonly onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private readonly elementRef: ElementRef) { }
+  constructor(private readonly elementRef: ElementRef,
+              private readonly renderer: Renderer2) { }
 
   ngOnInit(): void {
 
     fromEvent(this.elementRef.nativeElement, 'mouseenter')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.hover = true;
-      });
+        this.renderer.addClass(this.element.nativeElement, 'hover');
 
-    fromEvent(this.elementRef.nativeElement, 'mouseleave')
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.hover = false;
+        const mouseLeave$: Subject<void> = new Subject<void>();
+        fromEvent(this.elementRef.nativeElement, 'mouseleave')
+          .pipe(
+            takeUntil(mouseLeave$),
+            takeUntil(this.onDestroy$)
+          )
+          .subscribe(() => {
+            this.renderer.removeClass(this.element.nativeElement, 'hover');
+            mouseLeave$.next();
+            mouseLeave$.complete();
+          });
       });
 
     fromEvent(this.elementRef.nativeElement, 'click')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.selected = !this.selected;
+        if (this.selected) {
+          this.renderer.addClass(this.element.nativeElement, 'selected');
+        } else {
+          this.renderer.removeClass(this.element.nativeElement, 'selected');
+        }
       });
   }
 
